@@ -52,15 +52,16 @@ contract RPS is CommitReveal, TimeUnit {
         require(choice == 0||choice == 1 || choice == 2 || choice == 3 || choice == 4,"Invalid choice");
         require(player_not_played[msg.sender], "Player has already chosen");
 
-        // Hash choice และ randomString เพื่อซ่อนตัวเลือก
+        
         bytes32 dataHash = keccak256(abi.encodePacked(choice, randomString));
         commit(dataHash);
+        commitments[msg.sender] = dataHash;
         player_not_played[msg.sender] = false;
         numInput++;
     }
 
     mapping(address => bytes32) public commitments;
-    function revealChoice(uint256 _choice, string memory _secret) internal view returns(bool) {
+    function revealChoice(uint256 _choice, string memory _secret) public  view returns(bool) {
         bytes32 dataHash = keccak256(abi.encodePacked(_choice, _secret));
         return commitments[msg.sender] == dataHash;
     }
@@ -94,9 +95,6 @@ contract RPS is CommitReveal, TimeUnit {
         numPlayer = 0;
         reward = 0;
         delete players;
-        
-    
-       
     }
 
     function _checkWinnerAndPay() private {
