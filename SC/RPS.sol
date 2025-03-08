@@ -49,7 +49,7 @@ contract RPS is CommitReveal, TimeUnit {
 
     function input(uint256 choice, bytes32 randomString) public onlyPlay {
         require(numPlayer == 2, "Not enough players");
-        require(choice >= 0 && choice <= 4, "Invalid choice");
+        require(choice == 0||choice == 1 || choice == 2 || choice == 3 || choice == 4,"Invalid choice");
         require(player_not_played[msg.sender], "Player has already chosen");
 
         // Hash choice และ randomString เพื่อซ่อนตัวเลือก
@@ -68,7 +68,7 @@ contract RPS is CommitReveal, TimeUnit {
     function reveal(uint choice, string memory secret) public onlyPlay {
         require(numPlayer == 2, "Not enough players");
         require(player_not_played[msg.sender], "Player has already played");
-        require(choice >= 0 && choice <= 4, "Invalid choice");
+        require(choice == 0||choice == 1 || choice == 2 || choice == 3 || choice == 4,"Invalid choice");
         require(revealChoice(choice, secret), "Invalid reveal");
 
         player_choice[msg.sender] = choice;
